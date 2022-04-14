@@ -10,7 +10,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build da imagem
-FROM mcr.microsoft.com/dotnet/apsnet:5.0-buster-slim AS runtime
+FROM mcr.microsoft.com/dotnet/apsnet:5.0 AS build-env
 WORKDIR /app
 ENTRYPOINT ["dotnet", "aspnetapp.dll"]
 
