@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR /app
 
 # Copiar csproj e restaurar dependencias
@@ -10,7 +10,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build da imagem
-FROM mcr.microsoft.com/dotnet/apsnet:5.0 AS build-env AS base
+FROM mcr.microsoft.com/dotnet/apsnet:5.0 AS runtime
 WORKDIR /app
 ENTRYPOINT ["dotnet", "aspnetapp.dll"]
 
