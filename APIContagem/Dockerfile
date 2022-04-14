@@ -1,19 +1,16 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:5.0-alpine AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /app
 
 # Copiar csproj e restaurar dependencias
 COPY *.csproj ./
 RUN dotnet restore
 
-RUN pwsh -Command Write-Host "APIContagem: Gerando uma nova imagem Docker com Alpine e testando o PowerShell Core"
-
 # Build da aplicacao
 COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build da imagem
-FROM mcr.microsoft.com/dotnet/core/aspnet:5.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
-COPY published/aspnetapp.dkk ./
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "APIContagem.dll", "aspnetapp.dll"]
+ENTRYPOINT ["dotnet", "aspnetapp.dll"]
+
